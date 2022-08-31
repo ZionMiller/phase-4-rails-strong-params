@@ -1,4 +1,6 @@
 class BirdsController < ApplicationController
+  wrap_parameters format: []
+  # this will take away the deefault nested JSON paramterees nested hash under key
 
   # GET /birds
   def index
@@ -8,7 +10,8 @@ class BirdsController < ApplicationController
 
   # POST /birds
   def create
-    bird = Bird.create(name: params[:name], species: params[:species])
+    # bird = Bird.create(name: params[:name], species: params[:species])
+    bird = Bird.create(bird_params)
     render json: bird, status: :created
   end
 
@@ -20,6 +23,12 @@ class BirdsController < ApplicationController
     else
       render json: { error: "Bird not found" }, status: :not_found
     end
+  end
+
+  private #everything under private will be private
+
+  def bird_params
+    params.permit(:name, :species)
   end
 
 end
